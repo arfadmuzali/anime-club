@@ -1,0 +1,28 @@
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+body {
+  background-color: rgb(55, 65, 81) !important;
+}
+
+.grid-search {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-areas:
+    "anime char"
+    "anime manga";
+}
+.grid-anime {
+  grid-area: anime;
+}
+.grid-char {
+  grid-area: char;
+}
+.grid-manga {
+  grid-area: manga;
+}
