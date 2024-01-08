@@ -26,7 +26,8 @@ export function SkeletonAnimePage() {
 export function SkeletonSearchAnimePage() {
   return (
     <div className="md:mx-28 mx-7 my-10">
-      <div className="flex flex-col gap-3 md:gap-10">
+      <div className="flex flex-col gap-3 md:gap-1">
+        <Skeleton className="h-28" />
         <Skeleton className="h-28" />
         <Skeleton className="h-28" />
         <Skeleton className="h-28" />
@@ -38,7 +39,7 @@ export function SkeletonSearchAnimePage() {
 
 export function SkeletonCarousel() {
   return (
-    <div className="flex gap-10 m-auto w-fit mb-5">
+    <div className="flex md:gap-24 gap-14 mt-10 m-auto w-fit mb-5">
       <Skeleton className="md:h-80 md:w-60 h-40 w-32" />
       <Skeleton className="md:h-80 md:w-60 h-40 w-32" />
       <Skeleton className="md:h-80 md:w-60 h-40 w-32 md:block hidden" />
@@ -47,11 +48,11 @@ export function SkeletonCarousel() {
 }
 export function SkeletonSchedule() {
   return (
-    <div className="flex flex-col gap-1 m-auto w-fit mb-5">
-      <Skeleton className=" md:w-80 h-20 w-64" />
-      <Skeleton className=" md:w-80 h-20 w-64" />
-      <Skeleton className=" md:w-80 h-20 w-64" />
-      <Skeleton className=" md:w-80 h-20 w-64" />
+    <div className="flex flex-col gap-1 m-auto md:w-2/4 w-fit mb-5 mt-4">
+      <Skeleton className=" md:w-full h-24 w-72" />
+      <Skeleton className=" md:w-full h-24 w-72" />
+      <Skeleton className=" md:w-full h-24 w-72" />
+      <Skeleton className=" md:w-full h-24 w-72" />
     </div>
   );
 }

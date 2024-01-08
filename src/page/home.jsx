@@ -2,19 +2,12 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { axiosAnimeInstance } from "../lib/axiosInstance";
-import {
-  Box,
-  Button,
-  Image,
-  Text,
-  Card,
-  Heading,
-  Link as LinkChakra,
-} from "@chakra-ui/react";
+import { Box, Button, Image, Text, Card, Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { listDay } from "../lib/listDay";
 import { SkeletonCarousel, SkeletonSchedule } from "../component/skeletonPage";
+import zeroTwo from "../assets/zero-two.png";
 
 export default function Home() {
   const date = new Date();
@@ -102,6 +95,29 @@ export default function Home() {
 
   return (
     <div className="mx-10 md:mx-28 mt-3">
+      <div className="grid items-center grid-cols-2 md:grid-rows-1 m-auto w-fit md:gap-15 md:flex mb-14">
+        <Heading
+          size={"lg"}
+          className="text-orange-400 my-5 col-span-2 md:hidden text-center"
+        >
+          About Anime Club
+        </Heading>
+        <div>
+          <Heading
+            size={"lg"}
+            className="text-orange-400 my-5 col-span-2 hidden md:block"
+          >
+            About Anime Club
+          </Heading>
+          <Text className="text-white col-span-1 md:text-base text-sm">
+            Explore the Anime Club website, your ultimate destination for
+            comprehensive and current anime information at your fingertips.
+          </Text>
+        </div>
+
+        <Image src={zeroTwo} className="md:h-96 md:pl-14 col-span-1" />
+      </div>
+
       {isTopLoading ? (
         <SkeletonCarousel />
       ) : (
@@ -148,7 +164,7 @@ export default function Home() {
         {isScheduleLoading ? (
           <SkeletonSchedule />
         ) : (
-          <div>
+          <div className="md:w-2/4">
             <h3 className="text-orange-400  m-auto w-fit mb-2">
               Schedule Today
             </h3>
@@ -187,7 +203,7 @@ export default function Home() {
         {isSeasonLoading ? (
           <SkeletonSchedule />
         ) : (
-          <div>
+          <div className="md:w-2/4">
             <h3 className="text-orange-400  m-auto w-fit mb-2">Season Now</h3>
             <div>
               {animeSeason.map((e) => {

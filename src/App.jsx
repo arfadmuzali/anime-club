@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import AnimePage from "./page/animePage";
 import NotFoundPage from "./page/notFoundPage";
 import Footer from "./component/footer";
+import TopAnimePage from "./page/topAnime";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<AnimeList />} />
+        <Route path="/top-anime" element={<TopAnimePage />} />
         <Route path="/anime/:id" element={<AnimePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

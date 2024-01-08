@@ -1,7 +1,20 @@
 import { useEffect, useState } from "react";
-import { Card, Heading, Text, Image, Button } from "@chakra-ui/react";
+import {
+  Card,
+  Heading,
+  Text,
+  Image,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItemOption,
+  MenuOptionGroup,
+  MenuGroup,
+  MenuItem,
+} from "@chakra-ui/react";
 import { axiosAnimeInstance } from "../lib/axiosInstance";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SkeletonSearchAnimePage } from "../component/skeletonPage";
 import Pagination from "../component/pagination";
 import noResult from "../assets/no-results.png";
@@ -11,20 +24,34 @@ export default function AnimeList() {
   const navigate = useNavigate();
 
   const queryParams = new URLSearchParams(locationURL.search);
+  if (!queryParams.has("page")) {
+    queryParams.append("page", "1");
+  }
   const queryQ = queryParams.get("q");
   const queryPage = queryParams.get("page");
+  const queryGenres = queryParams.get("genres");
 
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastPage, setLastPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [genres, setGenres] = useState([]);
 
   const nextPage = () => {
     const inc = Number(queryParams.get("page")) + 1;
-    navigate(`/search?q=${queryQ}&page=${inc}`);
+    navigate(
+      `/search?${queryQ ? "q=" + queryQ + "&" : ""}${
+        queryGenres ? "genres=" + queryGenres + "&" : ""
+      }page=${inc}`
+    );
   };
   const previousPage = () => {
     const dec = Number(queryParams.get("page") - 1);
-    navigate(`/search?q=${queryQ}&page=${dec}`);
+    navigate(
+      `/search?${queryQ ? "q=" + queryQ + "&" : ""}${
+        queryGenres ? "genres=" + queryGenres + "&" : ""
+      }page=${dec}`
+    );
   };
 
   function AnimeNotFound() {
@@ -78,11 +105,15 @@ export default function AnimeList() {
     setIsLoading(true);
     try {
       const res = await axiosAnimeInstance.get(
-        `/anime?q=${queryQ}&page=${queryPage}`
+        `/anime?${queryQ ? "q=" + queryQ + "&" : ""}${
+          queryGenres ? "genres=" + queryGenres + "&" : ""
+        }${"page=" + queryPage}`
       );
       setAnimeList(res.data.data);
       setLastPage(res.data.pagination.last_visible_page);
+      setCurrentPage(res.data.pagination.current_page);
       setIsLoading(false);
+      // console.log(lastPage);
     } catch (err) {
       console.log(err);
     }
@@ -90,13 +121,83 @@ export default function AnimeList() {
 
   useEffect(() => {
     fetchAnimeList();
-  }, [queryQ, queryPage]);
+  }, [queryQ, queryPage, queryGenres]);
 
   return isLoading ? (
     <SkeletonSearchAnimePage />
   ) : animeList.length ? (
     <div className="w-5/6 m-auto">
-      <div className="">
+      <div>
+        <div className="flex md:justify-end justify-center m-2">
+          <Menu>
+            <MenuButton
+              color={"black"}
+              className="p-1 text-lg font-medium bg-orange-500 px-5 rounded text-center"
+            >
+              <span className="text-green-800 text-2xl font-medium">+</span>{" "}
+              Genre
+            </MenuButton>
+            <MenuList className="flex justify-center">
+              <MenuOptionGroup
+                type="checkbox"
+                defaultValue={[...queryGenres]}
+                onChange={(listGenre) => {
+                  setGenres((prev) => {
+                    return listGenre;
+                  });
+                }}
+              >
+                <MenuItemOption closeOnSelect={false} value="1">
+                  Action
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="2">
+                  Adventure
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="4">
+                  Comedy
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="10">
+                  Fantasy
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="14">
+                  Horror
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="8">
+                  Drama
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="37">
+                  Supranatural
+                </MenuItemOption>
+
+                <MenuItemOption closeOnSelect={false} value="22">
+                  Romance
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="24">
+                  Sci-Fi
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="36">
+                  Slice Of Life
+                </MenuItemOption>
+                <MenuItemOption closeOnSelect={false} value="30">
+                  Sports
+                </MenuItemOption>
+                <MenuItem
+                  closeOnSelect={false}
+                  value="30"
+                  className="hover:bg-inherit"
+                ></MenuItem>
+                <Link
+                  className="text-lg font-semibold text-center p-2 hover:bg-green-300 rounded"
+                  to={`/search?${queryQ ? "q=" + queryQ + "&" : ""}${
+                    genres ? "genres=" + genres + "&" : ""
+                  }page=1`}
+                >
+                  + Add Genres
+                </Link>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+        </div>
         <Pagination
           page={queryPage}
           totalPage={lastPage}
@@ -116,7 +217,7 @@ export default function AnimeList() {
           );
         })}
         <Pagination
-          page={queryPage}
+          page={currentPage}
           totalPage={lastPage}
           previous={previousPage}
           next={nextPage}
