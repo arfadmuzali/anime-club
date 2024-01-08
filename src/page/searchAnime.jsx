@@ -140,7 +140,7 @@ export default function AnimeList() {
             <MenuList className="flex justify-center">
               <MenuOptionGroup
                 type="checkbox"
-                defaultValue={queryGenres.split(",")}
+                defaultValue={queryGenres ? queryGenres.split(",") : []}
                 onChange={(listGenre) => {
                   setGenres((prev) => {
                     return listGenre;
